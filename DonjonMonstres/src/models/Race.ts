@@ -1,4 +1,5 @@
 import mongoose, { Schema, model, ObjectId } from 'mongoose';
+import ElementRepo from "@src/repos/ElementRepo"
 
 
 export interface IRace {
@@ -15,8 +16,8 @@ const RaceSchema = new Schema<IRace>({
 })
 
 
-function verifierElement(id : ObjectId) {
-    return true; // TODO faire la vérification avec le repo d'élément
+async function verifierElement(id : ObjectId) : Promise<Boolean> {
+    return await ElementRepo.persists(id);
 }
 
 mongoose.pluralize(null);

@@ -1,4 +1,6 @@
 import mongoose, { Schema, model, ObjectId, Mongoose } from 'mongoose';
+import RaceRepo from '@src/repos/RaceRepo';
+import MonstreRepo from '@src/repos/MonstreRepo';
 
 
 export interface IMonstre {
@@ -31,12 +33,12 @@ const MonstreSchema = new Schema<IMonstre>({
 })
 
 
-function validerRace(id : ObjectId) {
-    return true; // TODO remplacer avec le repo de la race
+function validerRace(id : ObjectId) : Promise<Boolean> {
+    return RaceRepo.persists(id);
 }
 
-function validerMonstre(id : ObjectId) {
-    return true; // TODO remplacer avec le repo de monstre
+function validerMonstre(id : ObjectId) : Promise<Boolean> {
+    return MonstreRepo.persists(id);
 }
 
 mongoose.pluralize(null);
