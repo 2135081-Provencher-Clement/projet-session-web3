@@ -9,8 +9,9 @@ export interface IRace {
     reproductionAsexuelle : Boolean;
 }
 
+// TODO handle l'erreur possible si un nom déjà existant est entrée (code : 11000)
 const RaceSchema = new Schema<IRace>({
-    nom : { type : String, required : [true, "Le nom de la race est nécéssaire"]},
+    nom : { type : String, required : [true, "Le nom de la race est nécéssaire"], unique : true},
     elementId : { type : mongoose.Schema.Types.ObjectId, required : [true, "L'id de l'élément est requis"], validate : [ verifierElement, "Aucun élément ne porte l'id fourni" ] },
     reproductionAsexuelle : { type : Boolean, required : [true, "La reproduction asexuelle est obligatoire"]}
 })

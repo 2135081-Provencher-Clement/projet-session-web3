@@ -2,10 +2,16 @@ import { IElement } from "@src/models/Element";
 import Element from "@src/models/Element";
 import { error } from "console";
 import { ObjectId } from "mongoose";
+import RaceRepo from "./RaceRepo";
 
 async function persists(id: ObjectId) : Promise<Boolean> {
     const element = await Element.findById(id);
     return element !== null;
+}
+
+async function getAll() : Promise<IElement[]> {
+    const elements = await Element.find();
+    return elements;
 }
 
 async function getIdParNom(nom: String) : Promise<ObjectId | undefined> {
@@ -33,7 +39,7 @@ async function insert(element: IElement) : Promise<IElement> {
 async function update(element: IElement) : Promise<IElement> {
     const elementPourModifier = await Element.findById(element._id);
     if (elementPourModifier === null) {
-        throw new Error("Élément introuvable");
+        throw new Error("Élément introuvable, mise à jour impossible");
     }
 
     elementPourModifier.nom = element.nom;
@@ -49,13 +55,14 @@ async function _delete(id: ObjectId) : Promise<void> {
         throw new Error("Élément introuvable, suppression impossible")
     }
 
-    // TODO supprimer tous les races avec cet élément
+    await RaceRepo.deleteAllFromElement(id);
 
     await Element.findByIdAndDelete(id);
 }
 
 export default {
     persists,
+    getAll,
     getIdParNom,
     getNomParId,
     insert,
