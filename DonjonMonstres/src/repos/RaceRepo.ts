@@ -54,7 +54,7 @@ async function update(race: IRace) : Promise<IRace> {
     return racePourChanger;
 }
 
-async function _delete(id: ObjectId) {
+async function _delete(id: ObjectId) : Promise<void> {
     if (!await persists(id)) {
         throw Error("La race est introuvable, superssion impossible");
     }
@@ -64,7 +64,7 @@ async function _delete(id: ObjectId) {
     await Race.findByIdAndDelete(id);
 }
 
-async function deleteAllFromElement(elementId: ObjectId) {
+async function deleteAllFromElement(elementId: ObjectId) : Promise<void> {
     const races = await Race.find({elementId : elementId});
 
     for (const race of races) {

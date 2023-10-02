@@ -37,8 +37,8 @@ export interface IMonstre {
 const AventurierSchema = new Schema({
     nom : { type : String, required : [true, "Le nom de l'aventurier est nécéssaire"] },
     niveau : { type : Number, required : [true, "Le niveau de l'aventurier est obligatoire"], validate : [ (niveau : Number) => { return niveau.valueOf() > 0 && niveau.valueOf() <= 30 }, "Le niveau d'un aventurier doit être compris entre 1 et 30" ] },
-    rang : {type : rangAventurier, required : [true, "Le rang de l'aventurier est obligatoire (paysan, bourgeois, noble, royal)"]},
-    classe : {type : classeAventurier, required : [true, "La classe de l'aventurier est obligatoire (guérrier, mage, voleur, barde)"]}
+    rang : {type : rangAventurier, required : [true, "Le rang de l'aventurier est obligatoire (paysan, bourgeois, noble, royal)"], enum : [rangAventurier, "Les valeurs acceptées sont 'paysan', 'bourgeois', 'noble', 'royal'"]},
+    classe : {type : classeAventurier, required : [true, "La classe de l'aventurier est obligatoire (guérrier, mage, voleur, barde)"], enum : [classeAventurier, "Les classes acceptés sont 'guérrier', 'mage', 'voleur', 'barde'"]}
 })
 
 const MonstreSchema = new Schema<IMonstre>({

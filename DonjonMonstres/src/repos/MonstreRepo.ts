@@ -48,7 +48,7 @@ async function update(monstre: IMonstre) : Promise<IMonstre> {
     return monstrePourChanger;
 }
 
-async function _delete(id: ObjectId) {
+async function _delete(id: ObjectId) : Promise<void> {
     if (!await persists(id)) {
         throw Error("Monstre introuvable, supression impossible");
     }
@@ -56,7 +56,7 @@ async function _delete(id: ObjectId) {
     await Monstre.findByIdAndDelete(id);
 }
 
-async function deleteAllFromRace(raceId: ObjectId) {
+async function deleteAllFromRace(raceId: ObjectId) : Promise<void> {
     const monstres = await Monstre.find({ raceId : raceId });
 
     for (const monstre of monstres) {
