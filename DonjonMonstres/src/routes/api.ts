@@ -2,15 +2,13 @@ import { Router } from 'express';
 import jetValidator from 'jet-validator';
 
 import Paths from '../constants/Paths';
-import User from '@src/models/User';
-import UserRoutes from './UserRoutes';
 
 
 // **** Variables **** //
 
 const apiRouter = Router(),
   validate = jetValidator();
-
+/*
 
 // ** Add UserRouter ** //
 
@@ -45,7 +43,7 @@ userRouter.delete(
 
 // Add UserRouter
 apiRouter.use(Paths.Users.Base, userRouter);
-
+*/
 
 // **** Export default **** //
 

@@ -3,6 +3,7 @@ import Element from "@src/models/Element";
 import { error } from "console";
 import { ObjectId } from "mongoose";
 import RaceRepo from "./RaceRepo";
+import { ELEMENT_NOT_FOUND_DELETE_ERROR, ELEMENT_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
 
 async function persists(id: ObjectId) : Promise<Boolean> {
     const element = await Element.findById(id);
@@ -39,7 +40,7 @@ async function insert(element: IElement) : Promise<IElement> {
 async function update(element: IElement) : Promise<IElement> {
     const elementPourModifier = await Element.findById(element._id);
     if (elementPourModifier === null) {
-        throw new Error("Élément introuvable, mise à jour impossible");
+        throw new Error(ELEMENT_NOT_FOUND_UPDATE_ERROR);
     }
 
     elementPourModifier.nom = element.nom;
@@ -52,7 +53,7 @@ async function update(element: IElement) : Promise<IElement> {
 async function _delete(id: ObjectId) : Promise<void> {
     
     if (!await persists(id)) {
-        throw new Error("Élément introuvable, suppression impossible")
+        throw new Error(ELEMENT_NOT_FOUND_DELETE_ERROR)
     }
 
     await RaceRepo.deleteAllFromElement(id);
