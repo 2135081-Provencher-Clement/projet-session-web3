@@ -3,7 +3,6 @@ import HttpStatusCodes from "@src/constants/HttpStatusCodes";
 import ElementService from "@src/services/ElementService";
 import { IReq, IRes } from "./types/types";
 import { ELEMENT_NOT_FOUND_DELETE_ERROR, ELEMENT_NOT_FOUND_UPDATE_ERROR, ID_INVALIDE_ERROR } from "@src/constants/Erreurs";
-import { ObjectId } from "mongoose";
 
 async function getAll(request : IReq, result : IRes) {
     const elements = await ElementService.getAll();
@@ -14,7 +13,7 @@ async function getIdParNom(request : IReq, result : IRes) {
     const nom = request.params.nom;
     const id = await ElementService.getIdParNom(nom);
 
-    if (id === undefined) {
+    if (id === undefined || id === null) {
         return result.status(HttpStatusCodes.NOT_FOUND);
     }
 

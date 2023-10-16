@@ -2,7 +2,6 @@ import { IRace } from "@src/models/Race";
 import RaceService from "@src/services/RaceService";
 import HttpStatusCodes from "@src/constants/HttpStatusCodes";
 import { IRes, IReq } from "./types/types";
-import { ObjectId } from "mongoose";
 import { ID_INVALIDE_ERROR, RACE_NOT_FOUND_DELETE_ERROR, RACE_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
 
 async function getAll(request : IReq, result : IRes) {
@@ -35,13 +34,13 @@ async function getNomParId(request : IReq, result : IRes) {
     const objectId = mongoose.Types.ObjectId(id);
     // Fin code emprunté
 
-    const race = await RaceService.getById(objectId);
+    const nom = await RaceService.getNomParId(objectId);
 
-    if (race === undefined || race === null) {
+    if (nom === undefined || nom === null) {
         return result.status(HttpStatusCodes.NOT_FOUND).json({erreur : ID_INVALIDE_ERROR})
     }
 
-    return result.status(HttpStatusCodes.OK).json({nom : race.nom});
+    return result.status(HttpStatusCodes.OK).json({nom});
 }
 
 async function insert(request : IReq<{race : IRace}>, result : IRes) {
