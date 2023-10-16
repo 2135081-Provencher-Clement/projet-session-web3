@@ -11,14 +11,14 @@ async function getAll() : Promise<IRace[]> {
     return races;
 }
 
-async function getNomParId(id: ObjectId) : Promise<String | undefined> {
-    const nom = await RaceRepo.getNomParId(id);
-    return nom;
-}
-
 async function getById(id: ObjectId) : Promise<IRace | undefined> {
     const race = await RaceRepo.getById(id);
     return race;
+}
+
+async function getIdParNom(nom: String) : Promise<ObjectId | undefined> {
+    const id = await RaceRepo.getIdParNom(nom);
+    return id;
 }
 
 async function insert(race : IRace) : Promise<IRace> {
@@ -43,7 +43,7 @@ export default {
     persists,
     getAll,
     getById,
-    getNomParId,
+    getIdParNom,
     insert,
     update,
     delete : _delete,

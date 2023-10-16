@@ -4,12 +4,31 @@
 
 
 export default {
-  Base: '/api',
-  Users: {
-    Base: '/users',
-    Get: '/all',
-    Add: '/add',
-    Update: '/update',
-    Delete: '/delete/:id',
+  Base: '/',
+  Element: {
+    Base: '/element',
+    GetAll: '/',
+    GetIdParNom: '/idParNom/:nom',
+    GetNomParId: '/:id',
+    Insert: '/ajouter',
+    Update: '/miseAJour',
+    Delete: '/supression/:id'
   },
+  Race: {
+    Base: '/race',
+    GetAll: '/',
+    GetById: '/:id',
+    GetIdParNom: '/idParNom/:nom',
+    Insert: '/ajouter',
+    Update: '/miseAJour',
+    Delete: '/supression/:id'
+  },
+  Monstre: {
+    Base: '/race',
+    GetAll: '/',
+    GetById: '/:id',
+    Insert: '/ajouter',
+    Update: '/miseAJour',
+    Delete: '/supression/:id'
+  }
 } as const;

@@ -16,6 +16,12 @@ async function getIdParNom(nom: String) : Promise<ObjectId | undefined> {
     return element;
 }
 
+async function getNomParId(id: ObjectId) : Promise<String | undefined> {
+    const nomElement = await ElementRepo.getNomParId(id);
+    return nomElement;
+}
+
+
 async function insert(element: IElement) : Promise<IElement> {
     const nouvelelement = await ElementRepo.insert(element);
     return nouvelelement;
@@ -34,6 +40,7 @@ export default {
     persists,
     getAll,
     getIdParNom,
+    getNomParId,
     insert,
     update,
     delete : _delete

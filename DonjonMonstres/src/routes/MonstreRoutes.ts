@@ -19,7 +19,7 @@ async function getById(request : IReq, result : IRes) {
 
     const monstre = await MonstreService.getById(objectId);
 
-    if (monstre === undefined || monstre === null) {
+    if (monstre === undefined) {
         return result.status(HttpStatusCodes.NOT_FOUND).json({erreur : ID_INVALIDE_ERROR})
     }
 

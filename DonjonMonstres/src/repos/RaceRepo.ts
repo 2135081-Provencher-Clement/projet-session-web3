@@ -15,11 +15,11 @@ async function getAll() : Promise<IRace[]> {
     return races;
 }
 
-async function getNomParId(id: ObjectId) : Promise<String | undefined> {
-    const race = await Race.findById(id);
-    if (race !== null) 
-    {
-        return race.nom;
+async function getIdParNom(nom: String) : Promise<ObjectId | undefined> {
+    const race = await Race.findOne({nom : nom});
+
+    if (race !== null) {
+        return race.id;
     }
 
     return undefined;
@@ -77,7 +77,7 @@ export default {
     persists,
     getAll,
     getById,
-    getNomParId,
+    getIdParNom,
     insert,
     update,
     delete : _delete,

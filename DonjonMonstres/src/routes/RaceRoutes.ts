@@ -19,28 +19,22 @@ async function getById(request : IReq, result : IRes) {
 
     const race = await RaceService.getById(objectId);
 
-    if (race === undefined || race === null) {
+    if (race === undefined) {
         return result.status(HttpStatusCodes.NOT_FOUND).json({erreur : ID_INVALIDE_ERROR})
     }
 
     return result.status(HttpStatusCodes.OK).json({race});
 }
 
-async function getNomParId(request : IReq, result : IRes) {
-    const id = request.params.id;
+async function getIdParNom(request : IReq, result : IRes) {
+    const nom = request.params.nom;
+    const id = await RaceService.getIdParNom(nom);
 
-    // Solution trouvée à : https://stackoverflow.com/questions/6578178/node-js-mongoose-js-string-to-objectid-function
-    var mongoose = require('mongoose');
-    const objectId = mongoose.Types.ObjectId(id);
-    // Fin code emprunté
-
-    const nom = await RaceService.getNomParId(objectId);
-
-    if (nom === undefined || nom === null) {
-        return result.status(HttpStatusCodes.NOT_FOUND).json({erreur : ID_INVALIDE_ERROR})
+    if (id === undefined) {
+        return result.status(HttpStatusCodes.NOT_FOUND);
     }
 
-    return result.status(HttpStatusCodes.OK).json({nom});
+    return result.status(HttpStatusCodes.OK).json({id});
 }
 
 async function insert(request : IReq<{race : IRace}>, result : IRes) {
@@ -89,7 +83,7 @@ async function _delete(request : IReq, result : IRes) {
 export default {
     getAll,
     getById,
-    getNomParId,
+    getIdParNom,
     insert,
     update,
     delete : _delete
