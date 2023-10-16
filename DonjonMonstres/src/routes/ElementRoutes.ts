@@ -3,7 +3,6 @@ import HttpStatusCodes from "@src/constants/HttpStatusCodes";
 import ElementService from "@src/services/ElementService";
 import { IReq, IRes } from "./types/types";
 import { ELEMENT_NOT_FOUND_DELETE_ERROR, ELEMENT_NOT_FOUND_UPDATE_ERROR, ID_INVALIDE_ERROR } from "@src/constants/Erreurs";
-import { request } from "http";
 import { ObjectId } from "mongoose";
 
 async function getAll(request : IReq, result : IRes) {
@@ -25,7 +24,7 @@ async function getIdParNom(request : IReq, result : IRes) {
 async function insert(request : IReq<{element : IElement}>, result : IRes) {
     const { element } = request.body;
     const nouvelElement = await ElementService.insert(element);
-    return result.status(HttpStatusCodes.CREATED).json({nouvelElement});
+    return result.status(HttpStatusCodes.CREATED).json({element : nouvelElement});
 }
 
 async function update(request : IReq<{element : IElement}>, result : IRes) {
@@ -37,7 +36,7 @@ async function update(request : IReq<{element : IElement}>, result : IRes) {
 
     try {
         const elementModifie = await ElementService.update(element); // Lancera une erreur si l'élément n'est pas trouvé
-        return result.status(HttpStatusCodes.CREATED).json({elementModifie});
+        return result.status(HttpStatusCodes.OK).json({element : elementModifie});
     }
     catch (erreur) {
         return result.status(HttpStatusCodes.NOT_FOUND).json({erreur});
@@ -45,22 +44,19 @@ async function update(request : IReq<{element : IElement}>, result : IRes) {
 }
 
 async function _delete(request : IReq, result : IRes) {
-    const stringId = request.params.id;
-    let id : ObjectId;
+    const id = request.params.id;
 
-    try {
-        id = stringId as unknown as ObjectId
-    }
-    catch (erreur) {
-        return result.status(HttpStatusCodes.BAD_REQUEST).json({erreur : ID_INVALIDE_ERROR});
-    }
+    // Solution trouvée à : https://stackoverflow.com/questions/6578178/node-js-mongoose-js-string-to-objectid-function
+    var mongoose = require('mongoose');
+    const objectId = mongoose.Types.ObjectId(id);
+    // Fin code emprunté
 
-    if (!ElementService.persists(id)) {
+    if (!ElementService.persists(objectId)) {
         return result.status(HttpStatusCodes.NOT_FOUND).json({erreur : ELEMENT_NOT_FOUND_DELETE_ERROR});
     }
 
     try {
-        await ElementService.delete(id);
+        await ElementService.delete(objectId); //Lancera une erreur si l'élément n'est pas trouvé
         return result.status(HttpStatusCodes.OK).end();
     }
     catch (erreur) {

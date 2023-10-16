@@ -3,6 +3,7 @@ import Race from "@src/models/Race";
 import { error } from "console";
 import { ObjectId } from "mongoose";
 import MonstreRepo from "./MonstreRepo";
+import { RACE_NOT_FOUND_DELETE_ERROR, RACE_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
 
 async function persists(id: ObjectId) : Promise<Boolean> {
     const race = await Race.findById(id);
@@ -42,7 +43,7 @@ async function insert(race: IRace) : Promise<IRace> {
 async function update(race: IRace) : Promise<IRace> {
     const racePourChanger = await Race.findById(race._id);
     if (racePourChanger === null) {
-        throw new Error("Race introuvable, mise à jour impossible");
+        throw new Error(RACE_NOT_FOUND_UPDATE_ERROR);
     }
 
     racePourChanger.nom = race.nom;
@@ -56,7 +57,7 @@ async function update(race: IRace) : Promise<IRace> {
 
 async function _delete(id: ObjectId) : Promise<void> {
     if (!await persists(id)) {
-        throw Error("La race est introuvable, superssion impossible");
+        throw Error(RACE_NOT_FOUND_DELETE_ERROR);
     }
 
     await MonstreRepo.deleteAllFromRace(id);

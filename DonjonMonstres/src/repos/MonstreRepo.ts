@@ -1,3 +1,4 @@
+import { MONSTRE_NOT_FOUND_DELETE_ERROR, MONSTRE_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
 import { IMonstre } from "@src/models/Monstre";
 import Monstre from "@src/models/Monstre";
 import { ObjectId } from "mongoose";
@@ -32,7 +33,7 @@ async function insert(monstre: IMonstre) : Promise<IMonstre> {
 async function update(monstre: IMonstre) : Promise<IMonstre> {
     const monstrePourChanger = await Monstre.findById(monstre._id);
     if (monstrePourChanger === null) {
-        throw new Error("Monstre introuvable, mise à jour impossible");
+        throw new Error(MONSTRE_NOT_FOUND_UPDATE_ERROR);
     }
 
     monstrePourChanger.nom = monstre.nom;
@@ -50,7 +51,7 @@ async function update(monstre: IMonstre) : Promise<IMonstre> {
 
 async function _delete(id: ObjectId) : Promise<void> {
     if (!await persists(id)) {
-        throw Error("Monstre introuvable, supression impossible");
+        throw Error(MONSTRE_NOT_FOUND_DELETE_ERROR);
     }
 
     await Monstre.findByIdAndDelete(id);
