@@ -85,7 +85,6 @@ elementRouter.get(
 
 elementRouter.get(
 	Paths.Element.GetIdParNom,
-	ValiderObjectId,
 	ElementRoutes.getIdParNom
 );
 
@@ -129,7 +128,6 @@ raceRouter.get(
 
 raceRouter.get(
 	Paths.Race.GetIdParNom,
-	ValiderRace,
 	RaceRoutes.getIdParNom
 );
 

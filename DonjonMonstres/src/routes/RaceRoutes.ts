@@ -14,7 +14,7 @@ async function getById(request : IReq, result : IRes) {
 
     // Solution trouvée à : https://stackoverflow.com/questions/6578178/node-js-mongoose-js-string-to-objectid-function
     var mongoose = require('mongoose');
-    const objectId = mongoose.Types.ObjectId(id);
+    const objectId = new mongoose.Types.ObjectId(id);
     // Fin code emprunté
 
     const race = await RaceService.getById(objectId);
@@ -55,7 +55,7 @@ async function update(request : IReq<{race : IRace}>, result : IRes) {
         return result.status(HttpStatusCodes.OK).json({race : raceModifie});
     }
     catch (erreur) {
-        return result.status(HttpStatusCodes.NOT_FOUND).json({erreur});
+        return result.status(HttpStatusCodes.NOT_FOUND).json({erreur : RACE_NOT_FOUND_UPDATE_ERROR});
     }
 }
 
@@ -64,7 +64,7 @@ async function _delete(request : IReq, result : IRes) {
 
     // Solution trouvée à : https://stackoverflow.com/questions/6578178/node-js-mongoose-js-string-to-objectid-function
     var mongoose = require('mongoose');
-    const objectId = mongoose.Types.ObjectId(id);
+    const objectId = new mongoose.Types.ObjectId(id);
     // Fin code emprunté
 
     if(!RaceService.persists(objectId)) {
@@ -76,7 +76,7 @@ async function _delete(request : IReq, result : IRes) {
         return result.status(HttpStatusCodes.OK).end();
     }
     catch (erreur) {
-        return result.status(HttpStatusCodes.NOT_FOUND).json({erreur});
+        return result.status(HttpStatusCodes.NOT_FOUND).json({erreur : RACE_NOT_FOUND_DELETE_ERROR});
     }
 }
 

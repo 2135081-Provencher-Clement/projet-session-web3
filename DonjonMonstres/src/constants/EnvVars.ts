@@ -7,6 +7,7 @@
 
 export default {
   NodeEnv: (process.env.NODE_ENV ?? ''),
+  MongoDb_URI: process.env.MONGODB_URI ?? '',
   Port: (process.env.PORT ?? 0),
   CookieProps: {
     Key: 'ExpressGeneratorTs',

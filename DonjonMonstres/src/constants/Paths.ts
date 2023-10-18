@@ -24,7 +24,7 @@ export default {
     Delete: '/supression/:id'
   },
   Monstre: {
-    Base: '/race',
+    Base: '/monstre',
     GetAll: '/',
     GetById: '/:id',
     Insert: '/ajouter',

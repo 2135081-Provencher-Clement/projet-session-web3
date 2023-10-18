@@ -1,0 +1,229 @@
+[
+    {
+      "_id": { "$oid": "60f6c1c96cc4b53fe09613d0" },
+      "nom": "Lucas Tremblay",
+      "raceId": { "$oid": "60f6c1c96cc4b53fe09613c0" },
+      "niveau": 5,
+      "age": 50,
+      "amisId": [
+        { "$oid": "60f6c1c96cc4b53fe09613d1" },
+        { "$oid": "60f6c1c96cc4b53fe09613d2" }
+      ],
+      "dateNaissance": "1973-04-15T00:00:00.000Z",
+      "aventuriersVaincus": [
+        {
+          "nom": "Andy Teddy",
+          "niveau": 10,
+          "rang": "Noble",
+          "classe": "Guerrier"
+        },
+        {
+          "nom": "Molly Poupée",
+          "niveau": 8,
+          "rang": "Bourgeois",
+          "classe": "Mage"
+        }
+      ]
+    },
+    {
+      "_id": { "$oid": "60f6c1c96cc4b53fe09613d1" },
+      "nom": "Oscar Leblanc",
+      "raceId": { "$oid": "60f6c1c96cc4b53fe09613c1" },
+      "niveau": 7,
+      "age": 80,
+      "amisId": [
+        { "$oid": "60f6c1c96cc4b53fe09613d0" },
+        { "$oid": "60f6c1c96cc4b53fe09613d2" }
+      ],
+      "dateNaissance": "1942-09-21T00:00:00.000Z",
+      "aventuriersVaincus": [
+        {
+          "nom": "Teddy Bear",
+          "niveau": 6,
+          "rang": "Paysan",
+          "classe": "Voleur"
+        },
+        {
+          "nom": "Sally Poupée",
+          "niveau": 9,
+          "rang": "Noble",
+          "classe": "Barde"
+        }
+      ]
+    },
+    {
+      "_id": { "$oid": "60f6c1c96cc4b53fe09613d2" },
+      "nom": "Sophie Dupuis",
+      "raceId": { "$oid": "60f6c1c96cc4b53fe09613c2" },
+      "niveau": 8,
+      "age": 60,
+      "amisId": [
+        { "$oid": "60f6c1c96cc4b53fe09613d0" },
+        { "$oid": "60f6c1c96cc4b53fe09613d1" }
+      ],
+      "dateNaissance": "1963-12-03T00:00:00.000Z",
+      "aventuriersVaincus": [
+        {
+          "nom": "Billy Le Jouet",
+          "niveau": 7,
+          "rang": "Paysan",
+          "classe": "Guerrier"
+        },
+        {
+          "nom": "Lulu Poupée",
+          "niveau": 5,
+          "rang": "Paysan",
+          "classe": "Mage"
+        }
+      ]
+    },
+    {
+        "_id": { "$oid": "60f6c1c96cc4b53fe09613d3" },
+        "nom": "Riven Rivensky",
+        "raceId": { "$oid": "60f6c1c96cc4b53fe09613c0" },
+        "niveau": 6,
+        "age": 45,
+        "amisId": [
+        { "$oid": "60f6c1c96cc4b53fe09613d4" },
+        { "$oid": "60f6c1c96cc4b53fe09613d5" }
+        ],
+        "dateNaissance": "1978-08-25T00:00:00.000Z",
+        "aventuriersVaincus": [
+        {
+            "nom": "Ezreal Explorer",
+            "niveau": 9,
+            "rang": "Noble",
+            "classe": "Mage"
+        },
+        {
+            "nom": "Darius the Hand of Noxus",
+            "niveau": 7,
+            "rang": "Paysan",
+            "classe": "Guerrier"
+        }
+        ]
+    },
+    {
+        "_id": { "$oid": "60f6c1c96cc4b53fe09613d4" },
+        "nom": "Zyra Thornbloom",
+        "raceId": { "$oid": "60f6c1c96cc4b53fe09613c1" },
+        "niveau": 8,
+        "age": 90,
+        "amisId": [
+        { "$oid": "60f6c1c96cc4b53fe09613d3" },
+        { "$oid": "60f6c1c96cc4b53fe09613d5" }
+        ],
+        "dateNaissance": "1933-05-11T00:00:00.000Z",
+        "aventuriersVaincus": [
+        {
+            "nom": "Sivir the Battle Mistress",
+            "niveau": 7,
+            "rang": "Paysan",
+            "classe": "Voleur"
+        },
+        {
+            "nom": "Yuumi the Magical Cat",
+            "niveau": 10,
+            "rang": "Noble",
+            "classe": "Mage"
+        }
+        ]
+    },
+    {
+        "_id": { "$oid": "60f6c1c96cc4b53fe09613d5" },
+        "nom": "Thresh Chainmaster",
+        "raceId": { "$oid": "60f6c1c96cc4b53fe09613c2" },
+        "niveau": 9,
+        "age": 75,
+        "amisId": [
+        { "$oid": "60f6c1c96cc4b53fe09613d3" },
+        { "$oid": "60f6c1c96cc4b53fe09613d4" }
+        ],
+        "dateNaissance": "1948-12-20T00:00:00.000Z",
+        "aventuriersVaincus": [
+        {
+            "nom": "Orianna the Lady of Clockwork",
+            "niveau": 6,
+            "rang": "Paysan",
+            "classe": "Mage"
+        }
+        ]
+    },
+    {
+        "_id": { "$oid": "60f6c1c96cc4b53fe09613d6" },
+        "nom": "Métheldrathor the Eternally Malevolent, Bringer of Eternal Darkness",
+        "raceId": { "$oid": "60f6c1c96cc4b53fe09613d7" },
+        "niveau": 12,
+        "age": 500,
+        "amisId": [],
+        "dateNaissance": "1523-03-07T00:00:00.000Z",
+        "aventuriersVaincus": [
+          {
+            "nom": "Yasuo the Unforgiven",
+            "niveau": 11,
+            "rang": "Noble",
+            "classe": "Guerrier"
+          },
+          { 
+            "nom": "Aarne Virtanen",
+            "niveau": 10,
+            "rang": "Noble",
+            "classe": "Guerrier"
+        },
+        { 
+            "nom": "Elina Koskinen",
+            "niveau": 8,
+            "rang": "Bourgeois",
+            "classe": "Mage"
+        },
+        { 
+            "nom": "Mikko Heikkinen",
+            "niveau": 6,
+            "rang": "Paysan",
+            "classe": "Voleur"
+        },
+        { 
+            "nom": "Liisa Niemi",
+            "niveau": 9,
+            "rang": "Noble",
+            "classe": "Barde"
+        },
+        { 
+            "nom": "Aleksi Järvinen",
+            "niveau": 7,
+            "rang": "Paysan",
+            "classe": "Voleur"
+        },
+        { 
+            "nom": "Sari Peltola",
+            "niveau": 10,
+            "rang": "Noble",
+            "classe": "Mage"
+        },
+        { 
+            "nom": "Eetu Ranta",
+            "niveau": 7,
+            "rang": "Paysan",
+            "classe": "Guerrier"
+        },
+        { 
+            "nom": "Lumi Mäkinen",
+            "niveau": 8,
+            "rang": "Bourgeois",
+            "classe": "Mage"
+        },
+        { 
+            "nom": "Elsa Korpela",
+            "niveau": 9,
+            "rang": "Noble",
+            "classe": "Barde"
+        },
+        { 
+            "nom": "Väinö Korhonen",
+            "niveau": 5,
+            "rang": "Paysan",
+            "classe": "Voleur"
+        }
+        ]
+      }
+]

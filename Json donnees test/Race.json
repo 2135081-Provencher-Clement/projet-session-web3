@@ -1,0 +1,38 @@
+[
+    {
+      "_id": { "$oid": "60f6c1c96cc4b53fe09613c0" },
+      "nom": "Dragon de Feu",
+      "elementId": { "$oid": "60f6c1c96cc4b53fe09613b0" },
+      "reproductionAsexuelle": false
+    },
+    {
+      "_id": { "$oid": "60f6c1c96cc4b53fe09613c1" },
+      "nom": "Esprit de l'Eau",
+      "elementId": { "$oid": "60f6c1c96cc4b53fe09613b1" },
+      "reproductionAsexuelle": true
+    },
+    {
+      "_id": { "$oid": "60f6c1c96cc4b53fe09613c2" },
+      "nom": "Golem de Terre",
+      "elementId": { "$oid": "60f6c1c96cc4b53fe09613b2" },
+      "reproductionAsexuelle": true
+    },
+    {
+      "_id": { "$oid": "60f6c1c96cc4b53fe09613c3" },
+      "nom": "Sylphide de l'Air",
+      "elementId": { "$oid": "60f6c1c96cc4b53fe09613b3" },
+      "reproductionAsexuelle": false
+    },
+    {
+      "_id": { "$oid": "60f6c1c96cc4b53fe09613c4" },
+      "nom": "Éclair de Foudre",
+      "elementId": { "$oid": "60f6c1c96cc4b53fe09613b4" },
+      "reproductionAsexuelle": true
+    },
+    {
+        "_id": { "$oid": "60f6c1c96cc4b53fe09613d7" },
+        "nom": "Éternels Maléfiques",
+        "elementId" : { "$oid": "60f6c1c96cc4b53fe09613d8" },
+        "reproductionAsexuelle": true
+      }
+  ]
