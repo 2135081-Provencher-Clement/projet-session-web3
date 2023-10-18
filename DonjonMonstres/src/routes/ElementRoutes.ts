@@ -1,7 +1,7 @@
 import { IElement } from "@src/models/Element";
 import HttpStatusCodes from "@src/constants/HttpStatusCodes";
 import ElementService from "@src/services/ElementService";
-import { IReq, IRes } from "./types/types";
+import { IReq, IRes } from "./types/express/misc";
 import { ELEMENT_NOT_FOUND_DELETE_ERROR, ELEMENT_NOT_FOUND_UPDATE_ERROR, ID_INVALIDE_ERROR } from "@src/constants/Erreurs";
 
 async function getAll(request : IReq, result : IRes) {
@@ -31,7 +31,7 @@ async function getNomParId(request : IReq, result : IRes) {
     const nom = await ElementService.getNomParId(objectId);
 
     if (nom === undefined) {
-        return result.status(HttpStatusCodes.NOT_FOUND).json({erreur : ID_INVALIDE_ERROR})
+        return result.status(HttpStatusCodes.BAD_REQUEST).json({erreur : ID_INVALIDE_ERROR})
     }
 
     return result.status(HttpStatusCodes.OK).json({nom});

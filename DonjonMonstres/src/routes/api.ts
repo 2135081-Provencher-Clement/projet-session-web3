@@ -1,50 +1,194 @@
-import { Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import jetValidator from 'jet-validator';
 
 import Paths from '../constants/Paths';
+import ElementRoutes from './ElementRoutes';
+import RaceRoutes from './RaceRoutes';
+import MonstreRoutes from './MonstreRoutes';
+import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+import { ID_INVALIDE_ERROR } from '@src/constants/Erreurs';
+import Race from '@src/models/Race';
+import Element from '@src/models/Element';
+import Monstre from '@src/models/Monstre';
 
-
-// **** Variables **** //
 
 const apiRouter = Router(),
   validate = jetValidator();
-/*
 
-// ** Add UserRouter ** //
+const elementRouter = Router();
+const raceRouter = Router();
+const monstreRouter = Router();
 
-const userRouter = Router();
+//Validateurs
 
-// Get all users
-userRouter.get(
-  Paths.Users.Get,
-  UserRoutes.getAll,
+// Fonction fortement inspirée de ce que j'ai trouvé dans cette solution -> https://stackoverflow.com/questions/13850819/can-i-determine-if-a-string-is-a-mongodb-objectid
+function ValiderObjectId(requete: Request, result: Response, next: NextFunction) {
+
+	var ObjectId = require("mongoose").Types.ObjectId;
+	var isValid = false;
+	var possibleObjectId = requete.params.id;
+
+	if (ObjectId.isValid(possibleObjectId)) 
+	{     
+		if (String(new ObjectId(possibleObjectId)) === possibleObjectId) 
+		{        
+			isValid = true      
+		}  
+	} 
+
+	if(!isValid) {
+		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : ID_INVALIDE_ERROR}).end();
+	} else {
+		next();
+	}
+}
+
+function ValiderElement(requete: Request, result: Response, next: NextFunction)
+{
+	const element = new Element(requete.body.element);
+	const error = element.validateSync();
+	if (error !== null && error !== undefined) {
+		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : error}).end();
+	} else {
+		next();
+	}
+}
+
+function ValiderRace(requete: Request, result: Response, next: NextFunction)
+{
+	const race = new Race(requete.body.race);
+	const error = race.validateSync();
+	if (error !== null && error !== undefined) {
+		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : error}).end();
+	} else {
+		next();
+	}
+}
+
+function ValiderMonstre(requete: Request, result: Response, next: NextFunction)
+{
+	const monstre = new Monstre(requete.body.monstre);
+	const error = monstre.validateSync();
+	if (error !== null && error !== undefined) {
+		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : error}).end();
+	} else {
+		next();
+	}
+}
+
+// Éléments
+
+elementRouter.get(
+	Paths.Element.GetAll,
+	ElementRoutes.getAll
 );
 
-// Add one user
-userRouter.post(
-  Paths.Users.Add,
-  validate(['user', User.isUser]),
-  UserRoutes.add,
+elementRouter.get(
+	Paths.Element.GetIdParNom,
+	ValiderObjectId,
+	ElementRoutes.getIdParNom
 );
 
-// Update one user
-userRouter.put(
-  Paths.Users.Update,
-  validate(['user', User.isUser]),
-  UserRoutes.update,
+elementRouter.get(
+	Paths.Element.GetNomParId,
+	ValiderObjectId,
+	ElementRoutes.getNomParId
 );
 
-// Delete one user
-userRouter.delete(
-  Paths.Users.Delete,
-  validate(['id', 'number', 'params']),
-  UserRoutes.delete,
+elementRouter.post(
+	Paths.Element.Insert,
+	ValiderElement,
+	ElementRoutes.insert
 );
 
-// Add UserRouter
-apiRouter.use(Paths.Users.Base, userRouter);
-*/
+elementRouter.put(
+	Paths.Element.Update,
+	ValiderElement,
+	ElementRoutes.update
+)
 
-// **** Export default **** //
+elementRouter.delete(
+	Paths.Element.Delete,
+	ValiderObjectId,
+	ElementRoutes.delete
+)
+
+
+// Races
+
+raceRouter.get(
+	Paths.Race.GetAll,
+	RaceRoutes.getAll
+);
+
+raceRouter.get(
+	Paths.Race.GetById,
+	ValiderObjectId,
+	RaceRoutes.getById
+);
+
+raceRouter.get(
+	Paths.Race.GetIdParNom,
+	ValiderRace,
+	RaceRoutes.getIdParNom
+);
+
+raceRouter.post(
+	Paths.Race.Insert,
+	ValiderRace,
+	RaceRoutes.insert
+);
+
+raceRouter.put(
+	Paths.Race.Update,
+	ValiderRace,
+	RaceRoutes.update
+);
+
+raceRouter.delete(
+	Paths.Race.Delete,
+	ValiderObjectId,
+	RaceRoutes.delete
+);
+
+
+// Monstres
+
+monstreRouter.get(
+	Paths.Monstre.GetAll,
+	MonstreRoutes.getAll
+);
+
+monstreRouter.get(
+	Paths.Monstre.GetById,
+	ValiderObjectId,
+	MonstreRoutes.getById
+);
+
+monstreRouter.post(
+	Paths.Monstre.Insert,
+	ValiderMonstre,
+	MonstreRoutes.insert
+);
+
+monstreRouter.put(
+	Paths.Monstre.Update,
+	ValiderMonstre,
+	MonstreRoutes.update
+);
+
+monstreRouter.delete(
+	Paths.Monstre.Delete,
+	ValiderObjectId,
+	MonstreRoutes.delete
+);
+
+
+
+apiRouter.use(Paths.Element.Base, elementRouter);
+
+apiRouter.use(Paths.Race.Base, raceRouter);
+
+apiRouter.use(Paths.Monstre.Base, monstreRouter);
 
 export default apiRouter;

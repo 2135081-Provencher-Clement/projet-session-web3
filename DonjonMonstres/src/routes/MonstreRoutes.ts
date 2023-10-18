@@ -1,7 +1,7 @@
 import { IMonstre } from "@src/models/Monstre";
 import MonstreService from "@src/services/MonstreService";
 import HttpStatusCodes from "@src/constants/HttpStatusCodes";
-import { IRes, IReq } from "./types/types";
+import { IReq, IRes } from "./types/express/misc";
 import { ID_INVALIDE_ERROR, MONSTRE_NOT_FOUND_DELETE_ERROR, MONSTRE_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
 
 async function getAll(request : IReq, result : IRes) {
@@ -20,7 +20,7 @@ async function getById(request : IReq, result : IRes) {
     const monstre = await MonstreService.getById(objectId);
 
     if (monstre === undefined) {
-        return result.status(HttpStatusCodes.NOT_FOUND).json({erreur : ID_INVALIDE_ERROR})
+        return result.status(HttpStatusCodes.BAD_REQUEST).json({erreur : ID_INVALIDE_ERROR})
     }
 
     return result.status(HttpStatusCodes.OK).json({monstre});
