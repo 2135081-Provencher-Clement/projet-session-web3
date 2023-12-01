@@ -1,4 +1,4 @@
-import { IMonstre } from "@src/models/Monstre";
+import { IMonstre, IMonstreLePlusMortel } from "@src/models/Monstre";
 import MonstreRepo from "@src/repos/MonstreRepo";
 import { ObjectId } from "mongoose";
 
@@ -14,6 +14,11 @@ async function getAll() : Promise<IMonstre[]> {
 async function getById(id: ObjectId) : Promise<IMonstre | undefined> {
     const monstre = await MonstreRepo.getById(id);
     return monstre;
+}
+
+async function getMonstreLePlusMortel() : Promise<IMonstreLePlusMortel | undefined> {
+    const monstreMortel = MonstreRepo.getMonstreLePlusMortel();
+    return monstreMortel;
 }
 
 async function insert(monstre : IMonstre) : Promise<IMonstre> {
@@ -38,6 +43,7 @@ export default {
     persists,
     getAll,
     getById,
+    getMonstreLePlusMortel,
     insert,
     update,
     delete : _delete,

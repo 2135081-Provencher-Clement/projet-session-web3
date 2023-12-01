@@ -2,7 +2,7 @@ import { IRace } from "@src/models/Race";
 import RaceService from "@src/services/RaceService";
 import HttpStatusCodes from "@src/constants/HttpStatusCodes";
 import { IReq, IRes } from "./types/express/misc";
-import { ID_INVALIDE_ERROR, RACE_NOT_FOUND_DELETE_ERROR, RACE_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
+import { ID_INVALIDE_ERROR, NOM_RACE_NOT_FOUND, RACE_NOT_FOUND_DELETE_ERROR, RACE_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
 
 async function getAll(request : IReq, result : IRes) {
     const races = await RaceService.getAll();
@@ -31,7 +31,7 @@ async function getIdParNom(request : IReq, result : IRes) {
     const id = await RaceService.getIdParNom(nom);
 
     if (id === undefined) {
-        return result.status(HttpStatusCodes.NOT_FOUND);
+        return result.status(HttpStatusCodes.NOT_FOUND).json({erreur : NOM_RACE_NOT_FOUND});
     }
 
     return result.status(HttpStatusCodes.OK).json({id});

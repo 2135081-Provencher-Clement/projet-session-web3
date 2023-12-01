@@ -2,7 +2,7 @@ import { IMonstre } from "@src/models/Monstre";
 import MonstreService from "@src/services/MonstreService";
 import HttpStatusCodes from "@src/constants/HttpStatusCodes";
 import { IReq, IRes } from "./types/express/misc";
-import { ID_INVALIDE_ERROR, MONSTRE_NOT_FOUND_DELETE_ERROR, MONSTRE_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
+import { ID_INVALIDE_ERROR, MONSTRE_MORTEL_INTROUVABLE, MONSTRE_NOT_FOUND_DELETE_ERROR, MONSTRE_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
 
 async function getAll(request : IReq, result : IRes) {
     const monstres = await MonstreService.getAll();
@@ -20,10 +20,22 @@ async function getById(request : IReq, result : IRes) {
     const monstre = await MonstreService.getById(objectId);
 
     if (monstre === undefined) {
-        return result.status(HttpStatusCodes.BAD_REQUEST).json({erreur : ID_INVALIDE_ERROR})
+        return result.status(HttpStatusCodes.BAD_REQUEST).json({erreur : ID_INVALIDE_ERROR});
     }
 
     return result.status(HttpStatusCodes.OK).json({monstre});
+}
+
+async function getMonstreLePlusMortel(request : IReq, result : IRes) {
+    console.log("route");
+    const monstreMortel = await MonstreService.getMonstreLePlusMortel();
+
+    if(monstreMortel === undefined) {
+        return result.status(HttpStatusCodes.NOT_FOUND).json({erreur : MONSTRE_MORTEL_INTROUVABLE});
+    }
+
+    return result.status(HttpStatusCodes.OK).json({monstreMortel});
+    
 }
 
 async function insert(request : IReq<{monstre : IMonstre}>, result : IRes) {
@@ -72,6 +84,7 @@ async function _delete(request : IReq, result : IRes) {
 export default {
     getAll,
     getById,
+    getMonstreLePlusMortel,
     insert,
     update,
     delete : _delete

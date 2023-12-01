@@ -10,7 +10,7 @@ import { connect } from 'mongoose';
 
 const SERVER_START_MSG = ('Express server started on port: ' + 
   EnvVars.Port.toString());
-  
-connect(EnvVars.MongoDb_URI)
+
+connect(EnvVars.MongoDb_URI, { dbName: "Monstres" })
   .then(() => server.listen(EnvVars.Port, () => logger.info(SERVER_START_MSG)))
   .catch((err) => logger.err(err, true));

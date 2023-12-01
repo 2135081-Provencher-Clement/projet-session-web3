@@ -8,6 +8,7 @@ import path from 'path';
 import helmet from 'helmet';
 import express, { Request, Response, NextFunction } from 'express';
 import logger from 'jet-logger';
+import cors from 'cors'
 
 import 'express-async-errors';
 
@@ -24,6 +25,8 @@ import { RouteError } from '@src/other/classes';
 // **** Variables **** //
 
 const app = express();
+
+app.use(cors());
 
 
 // **** Setup **** //
@@ -89,3 +92,4 @@ app.get('/users', (_: Request, res: Response) => {
 // **** Export default **** //
 
 export default app;
+

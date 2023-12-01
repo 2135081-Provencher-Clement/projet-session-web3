@@ -26,9 +26,10 @@ export default {
   Monstre: {
     Base: '/monstre',
     GetAll: '/',
-    GetById: '/:id',
+    GetById: '/id/:id',
     Insert: '/ajouter',
     Update: '/miseAJour',
-    Delete: '/supression/:id'
+    Delete: '/supression/:id',
+    Mortel: '/mortel'
   }
 } as const;

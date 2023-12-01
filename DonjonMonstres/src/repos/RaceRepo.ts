@@ -17,7 +17,6 @@ async function getAll() : Promise<IRace[]> {
 
 async function getIdParNom(nom: String) : Promise<ObjectId | undefined> {
     const race = await Race.findOne({nom : nom});
-
     if (race !== null) {
         return race.id;
     }

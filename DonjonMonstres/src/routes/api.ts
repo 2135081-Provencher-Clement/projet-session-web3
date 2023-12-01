@@ -12,8 +12,7 @@ import Element from '@src/models/Element';
 import Monstre from '@src/models/Monstre';
 
 
-const apiRouter = Router(),
-  validate = jetValidator();
+const apiRouter = Router();
 
 const elementRouter = Router();
 const raceRouter = Router();
@@ -54,12 +53,19 @@ function ValiderElement(requete: Request, result: Response, next: NextFunction)
 	}
 }
 
-function ValiderRace(requete: Request, result: Response, next: NextFunction)
+async function ValiderRace(requete: Request, result: Response, next: NextFunction)
 {
-	const race = new Race(requete.body.race);
-	const error = race.validateSync();
-	if (error !== null && error !== undefined) {
-		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : error}).end();
+	var erreur : any
+	try {
+		const race = new Race(requete.body.race);
+		erreur = await race.validate();
+	} catch (e) {
+		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : e}).end();
+		return;
+	}
+
+	if (erreur !== null && erreur !== undefined) {
+		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : erreur}).end();
 	} else {
 		next();
 	}
@@ -162,6 +168,11 @@ monstreRouter.get(
 	ValiderObjectId,
 	MonstreRoutes.getById
 );
+
+monstreRouter.get(
+	Paths.Monstre.Mortel,
+	MonstreRoutes.getMonstreLePlusMortel
+)
 
 monstreRouter.post(
 	Paths.Monstre.Insert,

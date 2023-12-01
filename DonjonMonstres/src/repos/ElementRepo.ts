@@ -33,7 +33,7 @@ async function getNomParId(id: ObjectId) : Promise<String | undefined> {
 
 async function insert(element: IElement) : Promise<IElement> {
     const nouvelElement = new Element(element);
-    nouvelElement.save();
+    await nouvelElement.save()
     return nouvelElement
 }
 

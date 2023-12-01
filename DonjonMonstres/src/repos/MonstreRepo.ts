@@ -1,7 +1,10 @@
 import { MONSTRE_NOT_FOUND_DELETE_ERROR, MONSTRE_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
-import { IMonstre } from "@src/models/Monstre";
+import { IMonstre, IMonstreLePlusMortel } from "@src/models/Monstre";
 import Monstre from "@src/models/Monstre";
+import { rejects } from "assert";
 import { ObjectId } from "mongoose";
+import { resolve } from "path";
+
 
 async function persists(id: ObjectId) : Promise<Boolean> {
     const monstre = await Monstre.findById(id);
@@ -22,7 +25,38 @@ async function getById(id: ObjectId) : Promise<IMonstre | undefined> {
     return undefined;
 }
 
-// TODO faire plus de get pour les monstres
+async function getMonstreLePlusMortel() : Promise<IMonstreLePlusMortel | undefined> {
+
+    // Cette requête aggregate à été conçue avec l'aide de ChatGPT (Le 29 novembre 2023)
+    return new Promise((resolve, rejects) => {
+            Monstre.aggregate<IMonstreLePlusMortel>([
+            {
+                $project: {
+                    _id: 1,
+                    aventuriersVaincusCount: { $size: { $ifNull: ["$aventuriersVaincus", []] } }
+                }
+            },
+            {
+                $sort: { aventuriersVaincusCount: -1 }
+            },
+            {
+                $limit: 1
+            }
+        ], (erreur : any, monstreLePlusMortel : IMonstreLePlusMortel[]) => {
+            if (erreur) {
+                console.log("il y a eu une erreur");
+                rejects(erreur);
+            } else {
+                console.log(monstreLePlusMortel);
+                if (monstreLePlusMortel.length > 0) {
+                    resolve(monstreLePlusMortel[0]);
+                } else {
+                    resolve(undefined);
+                }
+            }
+        });
+    });
+}
 
 async function insert(monstre: IMonstre) : Promise<IMonstre> {
     const nouveauMonstre = new Monstre(monstre);
@@ -70,6 +104,7 @@ export default {
     persists,
     getAll,
     getById,
+    getMonstreLePlusMortel,
     insert,
     update,
     delete : _delete,
