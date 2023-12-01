@@ -13,6 +13,7 @@ async function persists(id: ObjectId) : Promise<Boolean> {
 }
 
 async function getAll() : Promise<IMonstre[]> {
+    console.log("connection string : " + EnvVars.MongoDb_URI);
     await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
 
     const monstres = await Monstre.find();
