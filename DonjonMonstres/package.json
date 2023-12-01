@@ -40,6 +40,7 @@
     "jet-validator": "^1.1.1",
     "jsonfile": "^6.1.0",
     "module-alias": "^2.2.3",
+    "mongoose": "^8.0.2",
     "morgan": "^1.10.0",
     "serverless-http": "^3.2.0",
     "ts-command-line-args": "^2.5.1"
