@@ -1,5 +1,5 @@
 [build]
-    command = "cd DonjonMonstres && npx ts-node build.ts"
+    command = "cd DonjonMonstres && npm run build"
     functions = "functions"
 [functions]
     external_node_modules = ["express"]
