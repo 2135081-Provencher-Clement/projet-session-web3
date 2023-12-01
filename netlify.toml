@@ -1,6 +1,7 @@
 [build]
-    command = "cd DonjonMonstres && npm run buildeur"
+    command = "npm run build"
     functions = "functions"
+    base = "DonjonMonstres"
 [functions]
     external_node_modules = ["express"]
     node_bundler = "esbuild"
