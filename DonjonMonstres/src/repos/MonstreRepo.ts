@@ -1,8 +1,9 @@
+import EnvVars from "@src/constants/EnvVars";
 import { MONSTRE_NOT_FOUND_DELETE_ERROR, MONSTRE_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
 import { IMonstre, IMonstreLePlusMortel } from "@src/models/Monstre";
 import Monstre from "@src/models/Monstre";
 import { rejects } from "assert";
-import { ObjectId } from "mongoose";
+import { ObjectId, connect } from "mongoose";
 import { resolve } from "path";
 
 
@@ -12,6 +13,8 @@ async function persists(id: ObjectId) : Promise<Boolean> {
 }
 
 async function getAll() : Promise<IMonstre[]> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     const monstres = await Monstre.find();
     return monstres;
 }
