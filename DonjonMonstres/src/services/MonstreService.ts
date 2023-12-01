@@ -1,4 +1,4 @@
-import { IMonstre, IMonstreLePlusMortel } from "@src/models/Monstre";
+import { IMonstre } from "@src/models/Monstre";
 import MonstreRepo from "@src/repos/MonstreRepo";
 import { ObjectId } from "mongoose";
 
@@ -16,7 +16,7 @@ async function getById(id: ObjectId) : Promise<IMonstre | undefined> {
     return monstre;
 }
 
-async function getMonstreLePlusMortel() : Promise<IMonstreLePlusMortel | undefined> {
+async function getMonstreLePlusMortel() : Promise<IMonstre | undefined> {
     const monstreMortel = MonstreRepo.getMonstreLePlusMortel();
     return monstreMortel;
 }

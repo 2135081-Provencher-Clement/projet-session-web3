@@ -1,26 +1,42 @@
 import EnvVars from "@src/constants/EnvVars";
 import { MONSTRE_NOT_FOUND_DELETE_ERROR, MONSTRE_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
-import { IMonstre, IMonstreLePlusMortel } from "@src/models/Monstre";
+import { IMonstre } from "@src/models/Monstre";
 import Monstre from "@src/models/Monstre";
 import { rejects } from "assert";
-import { ObjectId, connect } from "mongoose";
+import { ObjectId, connect, SortOrder } from "mongoose";
 import { resolve } from "path";
 
-
+/**
+ * Indique si un monstre portant cet id existe
+ * 
+ * @param id l'id du monstre
+ * @returns si le monstre existe
+ */
 async function persists(id: ObjectId) : Promise<Boolean> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     const monstre = await Monstre.findById(id);
     return monstre !== null;
 }
 
+/**
+ * Retourne tous les monstres
+ */
 async function getAll() : Promise<IMonstre[]> {
-    console.log("connection string : " + EnvVars.MongoDb_URI);
     await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
 
     const monstres = await Monstre.find();
     return monstres;
 }
 
+/**
+ * Retourne un monstre
+ * @param id l'id du monstre
+ * @returns Le monstre
+ */
 async function getById(id: ObjectId) : Promise<IMonstre | undefined> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     const monstre = await Monstre.findById(id);
     if (monstre !== null) {
         return monstre;
@@ -29,46 +45,42 @@ async function getById(id: ObjectId) : Promise<IMonstre | undefined> {
     return undefined;
 }
 
-async function getMonstreLePlusMortel() : Promise<IMonstreLePlusMortel | undefined> {
+/**
+ * Trouve le monstre ayant le plus d'aventuriers vaincus
+ * 
+ * @returns Le monstre
+ */
+async function getMonstreLePlusMortel() : Promise<IMonstre | undefined> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
 
-    // Cette requête aggregate à été conçue avec l'aide de ChatGPT (Le 29 novembre 2023)
-    return new Promise((resolve, rejects) => {
-            Monstre.aggregate<IMonstreLePlusMortel>([
-            {
-                $project: {
-                    _id: 1,
-                    aventuriersVaincusCount: { $size: { $ifNull: ["$aventuriersVaincus", []] } }
-                }
-            },
-            {
-                $sort: { aventuriersVaincusCount: -1 }
-            },
-            {
-                $limit: 1
-            }
-        ], (erreur : any, monstreLePlusMortel : IMonstreLePlusMortel[]) => {
-            if (erreur) {
-                console.log("il y a eu une erreur");
-                rejects(erreur);
-            } else {
-                console.log(monstreLePlusMortel);
-                if (monstreLePlusMortel.length > 0) {
-                    resolve(monstreLePlusMortel[0]);
-                } else {
-                    resolve(undefined);
-                }
-            }
-        });
-    });
+    const monstres = await Monstre.find();
+    monstres.sort((premier : IMonstre, deuxieme : IMonstre) => {return premier.aventuriersVaincus.length - deuxieme.aventuriersVaincus.length});
+
+    return monstres[0];
 }
 
+/**
+ * Insère un monstre
+ * 
+ * @param monstre Le monstre
+ * @returns Le monstre inséré
+ */
 async function insert(monstre: IMonstre) : Promise<IMonstre> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     const nouveauMonstre = new Monstre(monstre);
     nouveauMonstre.save();
     return nouveauMonstre;
 }
 
+/**
+ * Mets à jour un monstre
+ * @param monstre Le nouveau monstre
+ * @returns Le monstre modifié
+ */
 async function update(monstre: IMonstre) : Promise<IMonstre> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     const monstrePourChanger = await Monstre.findById(monstre._id);
     if (monstrePourChanger === null) {
         throw new Error(MONSTRE_NOT_FOUND_UPDATE_ERROR);
@@ -87,7 +99,13 @@ async function update(monstre: IMonstre) : Promise<IMonstre> {
     return monstrePourChanger;
 }
 
+/**
+ * Supprime un monstre
+ * @param id L'id du monstre
+ */
 async function _delete(id: ObjectId) : Promise<void> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+    
     if (!await persists(id)) {
         throw Error(MONSTRE_NOT_FOUND_DELETE_ERROR);
     }
@@ -95,14 +113,19 @@ async function _delete(id: ObjectId) : Promise<void> {
     await Monstre.findByIdAndDelete(id);
 }
 
+/**
+ * supprime tous les monstres d'une certaine race
+ * @param raceId L'id de la race
+ */
 async function deleteAllFromRace(raceId: ObjectId) : Promise<void> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     const monstres = await Monstre.find({ raceId : raceId });
 
     for (const monstre of monstres) {
         await _delete(monstre.id);
     }
 }
-
 
 export default {
     persists,

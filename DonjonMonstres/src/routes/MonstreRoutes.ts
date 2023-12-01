@@ -27,14 +27,13 @@ async function getById(request : IReq, result : IRes) {
 }
 
 async function getMonstreLePlusMortel(request : IReq, result : IRes) {
-    console.log("route");
     const monstreMortel = await MonstreService.getMonstreLePlusMortel();
 
     if(monstreMortel === undefined) {
         return result.status(HttpStatusCodes.NOT_FOUND).json({erreur : MONSTRE_MORTEL_INTROUVABLE});
     }
 
-    return result.status(HttpStatusCodes.OK).json({monstreMortel});
+    return result.status(HttpStatusCodes.OK).json({ "nomMonstre" : monstreMortel.nom, "nombreVictimes" : monstreMortel.aventuriersVaincus.length});
     
 }
 

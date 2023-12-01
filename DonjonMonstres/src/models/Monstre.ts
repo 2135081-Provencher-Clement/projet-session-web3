@@ -16,14 +16,6 @@ enum classeAventurier {
     Barde = "barde"
 }
 
-/**
- * Pour accomoder la requête pour trouver le monstre le plus Mortel
- */
-export interface IMonstreLePlusMortel {
-    _id : ObjectId;
-    nombreDeVictimes : Number;
-}
-
 export interface IMonstre {
     _id : ObjectId;
     nom : String;
