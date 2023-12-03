@@ -29,14 +29,18 @@ function ValiderObjectId(requete: Request, result: Response, next: NextFunction)
 	var ObjectId = require("mongoose").Types.ObjectId;
 	var isValid = false;
 	var possibleObjectId = requete.params.id;
-
-	if (ObjectId.isValid(possibleObjectId)) 
-	{     
-		if (String(new ObjectId(possibleObjectId)) === possibleObjectId) 
-		{        
-			isValid = true      
-		}  
-	} 
+	try {
+		if (ObjectId.isValid(possibleObjectId)) 
+		{     
+			if (String(new ObjectId(possibleObjectId)) === possibleObjectId) 
+			{        
+				isValid = true      
+			}  
+		} 
+	} catch (erreur) {
+		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : ID_INVALIDE_ERROR}).end();
+		return;
+	}
 
 	if(!isValid) {
 		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : ID_INVALIDE_ERROR}).end();
@@ -50,10 +54,16 @@ function ValiderObjectId(requete: Request, result: Response, next: NextFunction)
  */
 function ValiderElement(requete: Request, result: Response, next: NextFunction)
 {
-	const element = new Element(requete.body.element);
-	const error = element.validateSync();
-	if (error !== null && error !== undefined) {
-		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : error}).end();
+	var erreur : any
+	try {
+		const element = new Element(requete.body.element);
+		erreur = element.validate();
+	} catch (e) {
+		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : e}).end();
+		return;
+	}
+	if (erreur !== null && erreur !== undefined) {
+		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : erreur}).end();
 	} else {
 		next();
 	}
@@ -85,10 +95,17 @@ async function ValiderRace(requete: Request, result: Response, next: NextFunctio
  */
 function ValiderMonstre(requete: Request, result: Response, next: NextFunction)
 {
-	const monstre = new Monstre(requete.body.monstre);
-	const error = monstre.validateSync();
-	if (error !== null && error !== undefined) {
-		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : error}).end();
+	var erreur : any
+	try {
+		const monstre = new Monstre(requete.body.monstre);
+		erreur = monstre.validate();
+	} catch (e) {
+		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : e}).end();
+		return;
+	}
+
+	if (erreur !== null && erreur !== undefined) {
+		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : erreur}).end();
 	} else {
 		next();
 	}

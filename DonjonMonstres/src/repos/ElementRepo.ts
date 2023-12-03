@@ -5,16 +5,31 @@ import { ObjectId } from "mongoose";
 import RaceRepo from "./RaceRepo";
 import { ELEMENT_NOT_FOUND_DELETE_ERROR, ELEMENT_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
 
+/**
+ * Indique si un élément portant cet id existe
+ * 
+ * @param id l'id de l'élément
+ * @returns si l'élément existe
+ */
 async function persists(id: ObjectId) : Promise<Boolean> {
     const element = await Element.findById(id);
     return element !== null;
 }
 
+/**
+ * Retourne tous les éléments
+ * @returns tous les éléments
+ */
 async function getAll() : Promise<IElement[]> {
     const elements = await Element.find();
     return elements;
 }
 
+/**
+ * Trouve un id selon un nom d'élément
+ * @param nom le nom de l'élément
+ * @returns l'id de l'élément
+ */
 async function getIdParNom(nom: String) : Promise<ObjectId | undefined> {
     const element = await Element.findOne({nom : nom});
     if (element !== null) {
@@ -23,6 +38,11 @@ async function getIdParNom(nom: String) : Promise<ObjectId | undefined> {
     return undefined;
 }
 
+/**
+ * Trouve le nom d'un élément selon un nom
+ * @param id l'id de l'élément
+ * @returns le nom de l'élément
+ */
 async function getNomParId(id: ObjectId) : Promise<String | undefined> {
     const element = await Element.findById(id);
     if (element !== null) {
@@ -31,12 +51,22 @@ async function getNomParId(id: ObjectId) : Promise<String | undefined> {
     return undefined;
 }
 
+/**
+ * Insère un élément
+ * @param element l'élément à insérer
+ * @returns l'élément inséré
+ */
 async function insert(element: IElement) : Promise<IElement> {
     const nouvelElement = new Element(element);
     await nouvelElement.save()
     return nouvelElement
 }
 
+/**
+ * Mets à jour un élément
+ * @param element l'élément à mettre à jour
+ * @returns l'élément modifié
+ */
 async function update(element: IElement) : Promise<IElement> {
     const elementPourModifier = await Element.findById(element._id);
     if (elementPourModifier === null) {
@@ -50,6 +80,10 @@ async function update(element: IElement) : Promise<IElement> {
     return elementPourModifier;
 }
 
+/**
+ * Supprime un élément
+ * @param id l'id de l'élément à supprimer
+ */
 async function _delete(id: ObjectId) : Promise<void> {
     
     if (!await persists(id)) {

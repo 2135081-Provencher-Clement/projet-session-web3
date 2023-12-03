@@ -22,7 +22,7 @@ async function getIdParNom(request : IReq, result : IRes) {
 
 async function getNomParId(request : IReq, result : IRes) {
     const id = request.params.id;
-
+    
     // Solution trouvée à : https://stackoverflow.com/questions/6578178/node-js-mongoose-js-string-to-objectid-function
     var mongoose = require('mongoose');
     const objectId = new new mongoose.Types.ObjectId(id);
