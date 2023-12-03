@@ -4,11 +4,17 @@ import HttpStatusCodes from "@src/constants/HttpStatusCodes";
 import { IReq, IRes } from "./types/express/misc";
 import { ID_INVALIDE_ERROR, NOM_RACE_NOT_FOUND, RACE_NOT_FOUND_DELETE_ERROR, RACE_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
 
+/**
+ * Trouve tous les races
+ */
 async function getAll(request : IReq, result : IRes) {
     const races = await RaceService.getAll();
     return result.status(HttpStatusCodes.OK).json({races});
 }
 
+/**
+ * Trouve une race selon un id
+ */
 async function getById(request : IReq, result : IRes) {
     const id = request.params.id;
 
@@ -26,6 +32,9 @@ async function getById(request : IReq, result : IRes) {
     return result.status(HttpStatusCodes.OK).json({race});
 }
 
+/**
+ * Trouve un id selon un nom
+ */
 async function getIdParNom(request : IReq, result : IRes) {
     const nom = request.params.nom;
     const id = await RaceService.getIdParNom(nom);
@@ -37,12 +46,18 @@ async function getIdParNom(request : IReq, result : IRes) {
     return result.status(HttpStatusCodes.OK).json({id});
 }
 
+/**
+ * INsère une race
+ */
 async function insert(request : IReq<{race : IRace}>, result : IRes) {
     const { race } = request.body;
     const nouvelleRace = await RaceService.insert(race);
     return result.status(HttpStatusCodes.CREATED).json({race : nouvelleRace})
 }
 
+/**
+ * Mets ;a jour une race
+ */
 async function update(request : IReq<{race : IRace}>, result : IRes) {
     const { race } = request.body;
 
@@ -59,6 +74,9 @@ async function update(request : IReq<{race : IRace}>, result : IRes) {
     }
 }
 
+/**
+ * Supprime une race
+ */
 async function _delete(request : IReq, result : IRes) {
     const id = request.params.id;
 

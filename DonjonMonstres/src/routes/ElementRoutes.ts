@@ -46,7 +46,7 @@ async function getNomParId(request : IReq, result : IRes) {
 
         return result.status(HttpStatusCodes.OK).json({nom});
     } catch (erreur) {
-        return result.status(HttpStatusCodes.BAD_REQUEST).json({erreur : erreur})
+        return result.status(HttpStatusCodes.BAD_REQUEST).json({erreur : ID_INVALIDE_ERROR})
     }
 }
 
