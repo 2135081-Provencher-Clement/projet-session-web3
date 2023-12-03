@@ -31,20 +31,23 @@ async function getIdParNom(request : IReq, result : IRes) {
  */
 async function getNomParId(request : IReq, result : IRes) {
     const id = request.params.id;
-    return result.status(HttpStatusCodes.BAD_REQUEST).json({erreur : "test"});
 
-    // Solution trouvée à : https://stackoverflow.com/questions/6578178/node-js-mongoose-js-string-to-objectid-function
-    var mongoose = require('mongoose');
-    const objectId = new new mongoose.Types.ObjectId(id);
-    // Fin code emprunté
+    try {
+        // Solution trouvée à : https://stackoverflow.com/questions/6578178/node-js-mongoose-js-string-to-objectid-function
+        var mongoose = require('mongoose');
+        const objectId = new new mongoose.Types.ObjectId(id);
+        // Fin code emprunté
 
-    const nom = await ElementService.getNomParId(objectId);
+        const nom = await ElementService.getNomParId(objectId);
 
-    if (nom === undefined) {
-        return result.status(HttpStatusCodes.BAD_REQUEST).json({erreur : ID_INVALIDE_ERROR})
+        if (nom === undefined) {
+            return result.status(HttpStatusCodes.BAD_REQUEST).json({erreur : ID_INVALIDE_ERROR})
+        }
+
+        return result.status(HttpStatusCodes.OK).json({nom});
+    } catch (erreur) {
+        return result.status(HttpStatusCodes.BAD_REQUEST).json({erreur : erreur})
     }
-
-    return result.status(HttpStatusCodes.OK).json({nom});
 }
 
 /**
