@@ -4,11 +4,17 @@ import ElementService from "@src/services/ElementService";
 import { IReq, IRes } from "./types/express/misc";
 import { ELEMENT_NOT_FOUND_DELETE_ERROR, ELEMENT_NOT_FOUND_UPDATE_ERROR, ID_INVALIDE_ERROR, NOM_ELEMENT_NOT_FOUND } from "@src/constants/Erreurs";
 
+/**
+ * Trouve tous les éléments
+ */
 async function getAll(request : IReq, result : IRes) {
     const elements = await ElementService.getAll();
     return result.status(HttpStatusCodes.OK).json({elements});
 }
 
+/**
+ * Trouve l'id d'un élément selon un nom
+ */
 async function getIdParNom(request : IReq, result : IRes) {
     const nom = request.params.nom;
     const id = await ElementService.getIdParNom(nom);
@@ -20,9 +26,13 @@ async function getIdParNom(request : IReq, result : IRes) {
     return result.status(HttpStatusCodes.OK).json({id});
 }
 
+/**
+ * Trouve le nom d'un élément selon un id
+ */
 async function getNomParId(request : IReq, result : IRes) {
     const id = request.params.id;
-    
+    return result.status(HttpStatusCodes.BAD_REQUEST).json({erreur : "test"});
+
     // Solution trouvée à : https://stackoverflow.com/questions/6578178/node-js-mongoose-js-string-to-objectid-function
     var mongoose = require('mongoose');
     const objectId = new new mongoose.Types.ObjectId(id);
@@ -37,6 +47,9 @@ async function getNomParId(request : IReq, result : IRes) {
     return result.status(HttpStatusCodes.OK).json({nom});
 }
 
+/**
+ * Insère un élément
+ */
 async function insert(request : IReq<{element : IElement}>, result : IRes) {
     const { element } = request.body;
 
@@ -50,6 +63,9 @@ async function insert(request : IReq<{element : IElement}>, result : IRes) {
     
 }
 
+/**
+ * Mets à jour un élément
+ */
 async function update(request : IReq<{element : IElement}>, result : IRes) {
     const { element } = request.body;
 
@@ -66,6 +82,9 @@ async function update(request : IReq<{element : IElement}>, result : IRes) {
     }
 }
 
+/**
+ * Supprime un élément
+ */
 async function _delete(request : IReq, result : IRes) {
     const id = request.params.id;
 
