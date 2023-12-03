@@ -9,7 +9,7 @@ export default {
     Base: '/element',
     GetAll: '/',
     GetIdParNom: '/idParNom/:nom',
-    GetNomParId: '/:id',
+    GetNomParId: '/id/:id',
     Insert: '/ajouter',
     Update: '/miseAJour',
     Delete: '/supression/:id'
@@ -17,7 +17,7 @@ export default {
   Race: {
     Base: '/race',
     GetAll: '/',
-    GetById: '/:id',
+    GetById: '/id/:id',
     GetIdParNom: '/idParNom/:nom',
     Insert: '/ajouter',
     Update: '/miseAJour',
@@ -30,6 +30,7 @@ export default {
     Insert: '/ajouter',
     Update: '/miseAJour',
     Delete: '/supression/:id',
-    Mortel: '/mortel'
+    Mortel: '/mortel',
+    Amical: '/amical'
   }
 } as const;

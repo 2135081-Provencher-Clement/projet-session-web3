@@ -20,6 +20,9 @@ const monstreRouter = Router();
 
 //Validateurs
 
+/**
+ * Valide si l'object id est valide
+ */
 // Fonction fortement inspirée de ce que j'ai trouvé dans cette solution -> https://stackoverflow.com/questions/13850819/can-i-determine-if-a-string-is-a-mongodb-objectid
 function ValiderObjectId(requete: Request, result: Response, next: NextFunction) {
 
@@ -42,6 +45,9 @@ function ValiderObjectId(requete: Request, result: Response, next: NextFunction)
 	}
 }
 
+/**
+ * Valide l'élément
+ */
 function ValiderElement(requete: Request, result: Response, next: NextFunction)
 {
 	const element = new Element(requete.body.element);
@@ -53,6 +59,9 @@ function ValiderElement(requete: Request, result: Response, next: NextFunction)
 	}
 }
 
+/**
+ * Valide la race
+ */
 async function ValiderRace(requete: Request, result: Response, next: NextFunction)
 {
 	var erreur : any
@@ -71,6 +80,9 @@ async function ValiderRace(requete: Request, result: Response, next: NextFunctio
 	}
 }
 
+/**
+ * Valide le monstre
+ */
 function ValiderMonstre(requete: Request, result: Response, next: NextFunction)
 {
 	const monstre = new Monstre(requete.body.monstre);
@@ -172,6 +184,11 @@ monstreRouter.get(
 monstreRouter.get(
 	Paths.Monstre.Mortel,
 	MonstreRoutes.getMonstreLePlusMortel
+)
+
+monstreRouter.get(
+	Paths.Monstre.Amical,
+	MonstreRoutes.getMonstreLePlusAmical
 )
 
 monstreRouter.post(

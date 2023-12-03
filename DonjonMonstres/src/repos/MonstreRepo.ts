@@ -2,9 +2,7 @@ import EnvVars from "@src/constants/EnvVars";
 import { MONSTRE_NOT_FOUND_DELETE_ERROR, MONSTRE_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
 import { IMonstre } from "@src/models/Monstre";
 import Monstre from "@src/models/Monstre";
-import { rejects } from "assert";
-import { ObjectId, connect, SortOrder } from "mongoose";
-import { resolve } from "path";
+import { ObjectId, connect } from "mongoose";
 
 /**
  * Indique si un monstre portant cet id existe
@@ -54,7 +52,21 @@ async function getMonstreLePlusMortel() : Promise<IMonstre | undefined> {
     await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
 
     const monstres = await Monstre.find();
-    monstres.sort((premier : IMonstre, deuxieme : IMonstre) => {return premier.aventuriersVaincus.length - deuxieme.aventuriersVaincus.length});
+    monstres.sort((premier : IMonstre, deuxieme : IMonstre) => {return deuxieme.aventuriersVaincus.length - premier.aventuriersVaincus.length});
+
+    return monstres[0];
+}
+
+/**
+ * Trouve le monstre ayant le plus d'amis monstres
+ * 
+ * @returns Le monstre
+ */
+async function getMonstreLePlusAmical() : Promise<IMonstre | undefined> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
+    const monstres = await Monstre.find();
+    monstres.sort((premier : IMonstre, deuxieme : IMonstre) => {return deuxieme.amisId.length - premier.amisId.length});
 
     return monstres[0];
 }
@@ -132,6 +144,7 @@ export default {
     getAll,
     getById,
     getMonstreLePlusMortel,
+    getMonstreLePlusAmical,
     insert,
     update,
     delete : _delete,

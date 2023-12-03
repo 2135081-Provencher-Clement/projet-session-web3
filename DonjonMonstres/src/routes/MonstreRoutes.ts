@@ -2,13 +2,19 @@ import { IMonstre } from "@src/models/Monstre";
 import MonstreService from "@src/services/MonstreService";
 import HttpStatusCodes from "@src/constants/HttpStatusCodes";
 import { IReq, IRes } from "./types/express/misc";
-import { ID_INVALIDE_ERROR, MONSTRE_MORTEL_INTROUVABLE, MONSTRE_NOT_FOUND_DELETE_ERROR, MONSTRE_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
+import { ID_INVALIDE_ERROR, MONSTRE_AMICAL_INTROUVABLE, MONSTRE_MORTEL_INTROUVABLE, MONSTRE_NOT_FOUND_DELETE_ERROR, MONSTRE_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
 
+/**
+ * Trouve tous les monstres
+ */
 async function getAll(request : IReq, result : IRes) {
     const monstres = await MonstreService.getAll();
     return result.status(HttpStatusCodes.OK).json({monstres});
 }
 
+/**
+ * Trouve un monstre selon l'id
+ */
 async function getById(request : IReq, result : IRes) {
     const id = request.params.id;
 
@@ -26,6 +32,9 @@ async function getById(request : IReq, result : IRes) {
     return result.status(HttpStatusCodes.OK).json({monstre});
 }
 
+/**
+ * Trouve le monstre avec le plus d'aventuriers vaincus
+ */
 async function getMonstreLePlusMortel(request : IReq, result : IRes) {
     const monstreMortel = await MonstreService.getMonstreLePlusMortel();
 
@@ -37,12 +46,31 @@ async function getMonstreLePlusMortel(request : IReq, result : IRes) {
     
 }
 
+/**
+ * Trouve le monstre avec le plus d'amis
+ */
+async function getMonstreLePlusAmical(request : IReq, result : IRes) {
+    const monstreAmical = await MonstreService.getMonstreLePlusAmical();
+
+    if(monstreAmical === undefined) {
+        return result.status(HttpStatusCodes.NOT_FOUND).json({erreur : MONSTRE_AMICAL_INTROUVABLE});
+    }
+
+    return result.status(HttpStatusCodes.OK).json({ "nomMonstre" : monstreAmical.nom, "nombreAmis" : monstreAmical.amisId.length});
+}
+
+/**
+ * Insère un monstre
+ */
 async function insert(request : IReq<{monstre : IMonstre}>, result : IRes) {
     const { monstre } = request.body;
     const nouveauMonstre = await MonstreService.insert(monstre);
     return result.status(HttpStatusCodes.CREATED).json({monstre : nouveauMonstre})
 }
 
+/**
+ * Mets à jour un monstre
+ */
 async function update(request : IReq<{monstre : IMonstre}>, result : IRes) {
     const { monstre } = request.body;
 
@@ -59,6 +87,9 @@ async function update(request : IReq<{monstre : IMonstre}>, result : IRes) {
     }
 }
 
+/**
+ * Supprime un monstre
+ */
 async function _delete(request : IReq, result : IRes) {
     const id = request.params.id;
 
@@ -84,6 +115,7 @@ export default {
     getAll,
     getById,
     getMonstreLePlusMortel,
+    getMonstreLePlusAmical,
     insert,
     update,
     delete : _delete
