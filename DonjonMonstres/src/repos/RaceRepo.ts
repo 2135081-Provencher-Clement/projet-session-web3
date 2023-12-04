@@ -1,8 +1,9 @@
 import { IRace } from "@src/models/Race";
 import Race from "@src/models/Race";
-import { ObjectId } from "mongoose";
+import { ObjectId, connect } from "mongoose";
 import MonstreRepo from "./MonstreRepo";
 import { RACE_NOT_FOUND_DELETE_ERROR, RACE_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
+import EnvVars from "@src/constants/EnvVars";
 
 /**
  * Indique si une race portant cet id existe
@@ -10,6 +11,8 @@ import { RACE_NOT_FOUND_DELETE_ERROR, RACE_NOT_FOUND_UPDATE_ERROR } from "@src/c
  * @returns si la race existe
  */
 async function persists(id: ObjectId) : Promise<Boolean> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     const race = await Race.findById(id);
     return race !== null;
 }
@@ -19,6 +22,8 @@ async function persists(id: ObjectId) : Promise<Boolean> {
  * @returns tous les races
  */
 async function getAll() : Promise<IRace[]> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     const races = await Race.find();
     return races;
 }
@@ -29,6 +34,8 @@ async function getAll() : Promise<IRace[]> {
  * @returns l'id de la reace
  */
 async function getIdParNom(nom: String) : Promise<ObjectId | undefined> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     const race = await Race.findOne({nom : nom});
     if (race !== null) {
         return race.id;
@@ -43,6 +50,8 @@ async function getIdParNom(nom: String) : Promise<ObjectId | undefined> {
  * @returns La race
  */
 async function getById(id: ObjectId) : Promise<IRace | undefined> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     const race = await Race.findById(id);
     if (race !== null) {
         return race;
@@ -57,6 +66,8 @@ async function getById(id: ObjectId) : Promise<IRace | undefined> {
  * @returns La race insérée
  */
 async function insert(race: IRace) : Promise<IRace> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     const nouvelleRace = new Race(race);
     nouvelleRace.save();
     return nouvelleRace;
@@ -68,6 +79,8 @@ async function insert(race: IRace) : Promise<IRace> {
  * @returns La race modifiée
  */
 async function update(race: IRace) : Promise<IRace> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     const racePourChanger = await Race.findById(race._id);
     if (racePourChanger === null) {
         throw new Error(RACE_NOT_FOUND_UPDATE_ERROR);
@@ -87,6 +100,8 @@ async function update(race: IRace) : Promise<IRace> {
  * @param id L'id de la race
  */
 async function _delete(id: ObjectId) : Promise<void> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     if (!await persists(id)) {
         throw Error(RACE_NOT_FOUND_DELETE_ERROR);
     }
@@ -101,6 +116,8 @@ async function _delete(id: ObjectId) : Promise<void> {
  * @param elementId L'id de l'élément
  */
 async function deleteAllFromElement(elementId: ObjectId) : Promise<void> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+    
     const races = await Race.find({elementId : elementId});
 
     for (const race of races) {

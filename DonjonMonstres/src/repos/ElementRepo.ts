@@ -1,9 +1,10 @@
 import { IElement } from "@src/models/Element";
 import Element from "@src/models/Element";
 import { error } from "console";
-import { ObjectId } from "mongoose";
+import { ObjectId, connect } from "mongoose";
 import RaceRepo from "./RaceRepo";
 import { ELEMENT_NOT_FOUND_DELETE_ERROR, ELEMENT_NOT_FOUND_UPDATE_ERROR } from "@src/constants/Erreurs";
+import EnvVars from "@src/constants/EnvVars";
 
 /**
  * Indique si un élément portant cet id existe
@@ -12,6 +13,8 @@ import { ELEMENT_NOT_FOUND_DELETE_ERROR, ELEMENT_NOT_FOUND_UPDATE_ERROR } from "
  * @returns si l'élément existe
  */
 async function persists(id: ObjectId) : Promise<Boolean> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+    
     const element = await Element.findById(id);
     return element !== null;
 }
@@ -21,6 +24,8 @@ async function persists(id: ObjectId) : Promise<Boolean> {
  * @returns tous les éléments
  */
 async function getAll() : Promise<IElement[]> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     const elements = await Element.find();
     return elements;
 }
@@ -31,6 +36,8 @@ async function getAll() : Promise<IElement[]> {
  * @returns l'id de l'élément
  */
 async function getIdParNom(nom: String) : Promise<ObjectId | undefined> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     const element = await Element.findOne({nom : nom});
     if (element !== null) {
         return element._id;
@@ -44,6 +51,8 @@ async function getIdParNom(nom: String) : Promise<ObjectId | undefined> {
  * @returns le nom de l'élément
  */
 async function getNomParId(id: ObjectId) : Promise<String | undefined> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     const element = await Element.findById(id);
     if (element !== null) {
         return element.nom;
@@ -57,6 +66,8 @@ async function getNomParId(id: ObjectId) : Promise<String | undefined> {
  * @returns l'élément inséré
  */
 async function insert(element: IElement) : Promise<IElement> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     const nouvelElement = new Element(element);
     await nouvelElement.save()
     return nouvelElement
@@ -68,6 +79,8 @@ async function insert(element: IElement) : Promise<IElement> {
  * @returns l'élément modifié
  */
 async function update(element: IElement) : Promise<IElement> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
+
     const elementPourModifier = await Element.findById(element._id);
     if (elementPourModifier === null) {
         throw new Error(ELEMENT_NOT_FOUND_UPDATE_ERROR);
@@ -85,6 +98,7 @@ async function update(element: IElement) : Promise<IElement> {
  * @param id l'id de l'élément à supprimer
  */
 async function _delete(id: ObjectId) : Promise<void> {
+    await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
     
     if (!await persists(id)) {
         throw new Error(ELEMENT_NOT_FOUND_DELETE_ERROR)

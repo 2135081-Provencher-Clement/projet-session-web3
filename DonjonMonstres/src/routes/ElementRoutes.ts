@@ -30,8 +30,10 @@ async function getIdParNom(request : IReq, result : IRes) {
  * Trouve le nom d'un élément selon un id
  */
 async function getNomParId(request : IReq, result : IRes) {
+    console.log("debut route getNomParId");
     const id = request.params.id;
 
+    console.log("paramètre id : " + id);
     try {
         // Solution trouvée à : https://stackoverflow.com/questions/6578178/node-js-mongoose-js-string-to-objectid-function
         var mongoose = require('mongoose');
