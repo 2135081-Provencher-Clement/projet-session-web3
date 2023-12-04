@@ -52,12 +52,12 @@ function ValiderObjectId(requete: Request, result: Response, next: NextFunction)
 /**
  * Valide l'élément
  */
-function ValiderElement(requete: Request, result: Response, next: NextFunction)
+async function ValiderElement(requete: Request, result: Response, next: NextFunction)
 {
 	var erreur : any
 	try {
 		const element = new Element(requete.body.element);
-		erreur = element.validate();
+		erreur = await element.validate();
 	} catch (e) {
 		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : e}).end();
 		return;
@@ -93,20 +93,18 @@ async function ValiderRace(requete: Request, result: Response, next: NextFunctio
 /**
  * Valide le monstre
  */
-function ValiderMonstre(requete: Request, result: Response, next: NextFunction)
+async function ValiderMonstre(requete: Request, result: Response, next: NextFunction)
 {
 	var erreur : any
 	try {
 		const monstre = new Monstre(requete.body.monstre);
-		erreur = monstre.validate();
+		erreur = await monstre.validate();
 	} catch (e) {
-		console.log("erreure lançé : " + e);
 		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : e}).end();
 		return;
 	}
 
 	if (erreur !== null && erreur !== undefined) {
-		console.log("erreure fabriquée : " + erreur);
 		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : erreur}).end();
 	} else {
 		next();
