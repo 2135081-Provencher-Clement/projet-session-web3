@@ -100,11 +100,13 @@ function ValiderMonstre(requete: Request, result: Response, next: NextFunction)
 		const monstre = new Monstre(requete.body.monstre);
 		erreur = monstre.validate();
 	} catch (e) {
+		console.log("erreure lançé : " + e);
 		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : e}).end();
 		return;
 	}
 
 	if (erreur !== null && erreur !== undefined) {
+		console.log("erreure fabriquée : " + erreur);
 		result.status(HttpStatusCodes.BAD_REQUEST).send({erreur : erreur}).end();
 	} else {
 		next();
