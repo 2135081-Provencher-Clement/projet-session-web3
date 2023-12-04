@@ -40,7 +40,11 @@ async function getNomParId(request : IReq, result : IRes) {
         const objectId = new new mongoose.Types.ObjectId(id);
         // Fin code emprunté
 
+        console.log("object id : " + objectId);
+
         const nom = await ElementService.getNomParId(objectId);
+
+        console.log("nom : " + nom);
 
         if (nom === undefined) {
             return result.status(HttpStatusCodes.BAD_REQUEST).json({erreur : ID_INVALIDE_ERROR})
@@ -48,6 +52,7 @@ async function getNomParId(request : IReq, result : IRes) {
 
         return result.status(HttpStatusCodes.OK).json({nom});
     } catch (erreur) {
+        console.log("erreure lançée")
         return result.status(HttpStatusCodes.BAD_REQUEST).json({erreur : ID_INVALIDE_ERROR})
     }
 }
