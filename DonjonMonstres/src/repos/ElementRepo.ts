@@ -53,7 +53,9 @@ async function getIdParNom(nom: String) : Promise<ObjectId | undefined> {
 async function getNomParId(id: ObjectId) : Promise<String | undefined> {
     await connect(EnvVars.MongoDb_URI, { dbName: "Monstres" });
 
+    console.log("id recu au repo" + id);
     const element = await Element.findById(id);
+    console.log("element");
     if (element !== null) {
         return element.nom;
     }
